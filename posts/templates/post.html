@@ -1,0 +1,34 @@
+{% extends 'base.html'%}
+{%block body_block%}
+
+<div class="container">
+    <h3>Posts</h3>
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+            {% for post in posts %}
+            <div class="card" style="background-color:#FBAB7E; border:3px solid brown; margin:5px;">
+                <div class="card-body" >
+                    <h6 class="card-title" style="color:blue; font-family:cursive;">{{post.author}}</h6>
+                    <hr>
+                    <p class="card-text" style="text-align:center">{{post.post_content}}</p>
+                    <i><p class="card-text">{{post.post_date}}</p></i>
+                    <form action="{%url 'like_post' %}" method="POST" >
+                        {%csrf_token%}
+                        <input type="hidden" name="post_id" value="{{post.id}}">
+                        {% if user not in post.likes.all%}
+                            <button class="btn btn-primary" type="submit">Like</button>
+                        {%else%}
+                            <button class="btn btn-light" type="submit">Unlike</button>
+                        {% endif %}
+                        <strong>{{post.likes.all.count}} likes</strong>
+                    </form>
+                </div>
+            </div>
+
+            {% endfor %}
+        </div>
+        <div class="col-2"></div>
+    </div>
+</div>
+{% endblock %}
